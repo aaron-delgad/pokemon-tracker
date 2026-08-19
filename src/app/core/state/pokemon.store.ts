@@ -20,11 +20,7 @@ export class PokemonStore {
 
   pokemons = computed(() => {
     const localCaptures = this.localDataState();
-    console.log(this.apiListState().map(poke => ({
-      ...poke,
-      localData: localCaptures[poke.id] || null
 
-    })));
     return this.apiListState().map(poke => ({
       ...poke,
       localData: localCaptures[poke.id] || null
@@ -41,7 +37,6 @@ export class PokemonStore {
           ...capt,
           id: this.extractIdFromUrl(capt.url),
         }));
-        console.log(mappedList);
         this.apiListState.set(mappedList);
         this.localDataState.set(localData);
         this.isLoading.set(false);
