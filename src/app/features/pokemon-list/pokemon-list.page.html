@@ -1,13 +1,52 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-title>Pokemon</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">pokemon-list</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  @if (storage.isLoading()) {
+    <div class="ion-text-center ion-padding">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+  }
+
+  <ion-list>
+    @for (pokemon of storage.pokemons(); track pokemon.id) {
+      <ion-item [button]="true" [detail]="true" (click)="goPokemonDetail(pokemon.id)">
+        <ion-avatar slot="start">
+          <img [src]="'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/'+ pokemon.id +'.png'">
+        </ion-avatar>
+
+        <ion-label>
+          <h2 class="ion-text-capitalize"><strong>{{ pokemon?.name }}</strong></h2>
+          @if (pokemon?.localData) {
+            <p>
+              <ion-text color="success">
+                capturado el: {{ pokemon?.localData?.captureDate | date: 'shortDate' }}
+              </ion-text>
+            </p>
+          } @else {
+            <p>
+              <ion-text color="medium">Salvaje</ion-text>
+            </p>
+          }
+        </ion-label>
+        @if (pokemon?.localData) {
+          <ion-icon name="radio-button-on-outline" color="success" slot="end"></ion-icon>
+        } @else {
+          <ion-icon name="radio-button-off-outline" color="medium" slot="end"></ion-icon>
+        }
+
+      </ion-item>
+    } @empty {
+      @if (!storage.isLoading()) {
+        <ion-item>
+          <ion-label class="ion-text-center">
+            No se encontraron Pokemons
+          </ion-label>
+        </ion-item>
+      }
+    }
+  </ion-list>
 </ion-content>

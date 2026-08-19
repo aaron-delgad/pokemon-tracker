@@ -1,13 +1,43 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>pokemon-detail</ion-title>
+  <ion-toolbar color="primary">
+    <ion-buttons>
+      <ion-back-button default-href="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Detalle del Pokemon</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">pokemon-detail</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  @if (pokemonDetail()) {
+    <ion-card>
+      <img [src]="'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/'+ pokemonId() +'.png'">
+      <ion-card-header>
+        <ion-card-title>{{ pokemonDetail().name }}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>Altura: {{ pokemonDetail().height }}</p>
+        <p>Peso: {{ pokemonDetail().weight }}</p>
+      </ion-card-content>
+    </ion-card>
+  } @else {
+    <ion-spinner name="dots"></ion-spinner>
+  }
 </ion-content>
+
+<ion-footer class="bg-white shadow-lg border-t border-gray-200">
+  <ion-toolbar class="px-4 py-3 flex justify-center items-center">
+    @if (isCapture()) {
+      <ion-button color="danger" expand="block" (click)="remove()" class="w-full font-bolt tracking-wide">
+        <ion-icon name="trash-outline"></ion-icon>
+        Liberar pokemon
+      </ion-button>
+
+    } @else {
+      <ion-button color="success" expand="block" (click)="capture()" class="w-full font-bolt tracking-wide">
+        <ion-icon name="trash-outline"></ion-icon>
+        capturar pokemon
+      </ion-button>
+    }
+  </ion-toolbar>
+
+</ion-footer>
